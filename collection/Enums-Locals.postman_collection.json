@@ -1,0 +1,166 @@
+{
+	"info": {
+		"_postman_id": "c200963d-e368-447b-aa2f-9bfbebc1b2ef",
+		"name": "Enums Locals",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Provinces",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parsear la respuesta JSON\r",
+							"var responseData = pm.response.json();\r",
+							"\r",
+							"// Verificar que la respuesta contiene el array\r",
+							"if (responseData && Array.isArray(responseData) && responseData.length > 0) {\r",
+							"    // Seleccionar un índice aleatorio\r",
+							"    var randomIndex = Math.floor(Math.random() * responseData.length);\r",
+							"\r",
+							"    // Obtener el provinceCode del elemento aleatorio\r",
+							"    var randomProvinceCode = responseData[randomIndex].provinceCode;\r",
+							"\r",
+							"    // Almacenar el provinceCode en una variable de entorno\r",
+							"    pm.collectionVariables.set(\"randomProvinceCode\", randomProvinceCode);\r",
+							"}\r",
+							"//ejecutamos otro request en autonomatico\r",
+							"postman.setNextRequest(\"Comuni\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/provinces",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"provinces"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Comuni",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parsear la respuesta JSON\r",
+							"var responseData = pm.response.json();\r",
+							"\r",
+							"// Verificar que la respuesta contiene el array\r",
+							"if (responseData && Array.isArray(responseData) && responseData.length > 0) {\r",
+							"    // Seleccionar un índice aleatorio\r",
+							"    var randomIndex = Math.floor(Math.random() * responseData.length);\r",
+							"\r",
+							"    // Obtener el municipalityCode del elemento aleatorio\r",
+							"    var randomMunicipalityCode = responseData[randomIndex].municipalityCode;\r",
+							"\r",
+							"    // Almacenar el municipalityCode en una variable de colección\r",
+							"    pm.collectionVariables.set(\"randomMunicipalityCode\", randomMunicipalityCode);\r",
+							"}\r",
+							"\r",
+							"console.log(\"Municipality Code: \" + randomMunicipalityCode);\r",
+							"postman.setNextRequest(\"Comune\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/provinces/{{randomProvinceCode}}/municipalities",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"provinces",
+						"{{randomProvinceCode}}",
+						"municipalities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Comune",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/municipalities/{{randomMunicipalityCode}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"municipalities",
+						"{{randomMunicipalityCode}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "randomProvinceCode",
+			"value": ""
+		},
+		{
+			"key": "randomMunicipalityCode",
+			"value": ""
+		}
+	]
+}
