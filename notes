@@ -1,0 +1,15 @@
+para dockerizar un microserviziop se deve agregar el Dockerfile
+como el que se usa en este ejemplo
+
+luego hacer un mvn clean package para generar el .jar
+una vez generado en la misma ruta donde esta el docker file
+hago unn docker build:
+
+ docker build -t italian-enum:ita-enum .
+
+ una vez generaro la imagen puedo hacer un docker image con
+ docker image ls
+
+ luego puedo hacer partir el contenedor con
+ docker run  -p 8080:8080  --name enum-provider italian-enum:ita-enum
+ donde especifico el puerto si no lo hecho como una properties el nombre de la imagen y el tag
