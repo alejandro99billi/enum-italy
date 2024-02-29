@@ -61,85 +61,87 @@ public class LocationServiceImpl implements LocationService {
     }
 
     private void exelReader() {
-        try (InputStream file = this.getClass().getClassLoader().getResourceAsStream(FILE_NAME);
-             HSSFWorkbook workbook = new HSSFWorkbook(file)) {
+        try (InputStream file = this.getClass().getClassLoader().getResourceAsStream(FILE_NAME)) {
+            assert file != null;
+            try (HSSFWorkbook workbook = new HSSFWorkbook(file)) {
 
-            HSSFSheet sheet = workbook.getSheetAt(0);
+                HSSFSheet sheet = workbook.getSheetAt(0);
 
-            for (Row row : sheet) {
-                Province province = new Province();
+                for (Row row : sheet) {
+                    Province province = new Province();
 
-                if(row.getCell(11) != null) {
-                    String cellValue = row.getCell(11).getStringCellValue();
-                    if(!"-".equals(cellValue)) {
-                        province.setProvinceName(cellValue);
-                    } else if (row.getCell(10) != null) {
-                        province.setProvinceName(row.getCell(10).getStringCellValue());
-                    }
-                }
-
-                if(row.getCell(2) != null) {
-                    province.setProvinceCode(row.getCell(2).getStringCellValue());
-                }
-
-                if(row.getCell(13) != null) {
-                    province.setProvinceAbbreviate(row.getCell(13).getStringCellValue());
-                }
-
-                provinces.add(province);
-
-
-                Municipality municipality = new Municipality();
-
-                Cell cell = row.getCell(4);
-                if(cell != null) {
-                    if(cell.getCellType() == CellType.STRING) {
-                        String cellValue = cell.getStringCellValue();
-                        municipality.setMunicipalityCode(cellValue);
-                    } else if(cell.getCellType() == CellType.NUMERIC) {
-                        double numericValue = cell.getNumericCellValue();
-                        String cellValue;
-                        //faccio il controllo della cella nel file sono presenti campi numerici
-                        if (numericValue % 1 == 0) {
-                            cellValue = String.format("%.0f", numericValue);
-                        } else {
-                            cellValue = String.valueOf(numericValue);
+                    if(row.getCell(11) != null) {
+                        String cellValue = row.getCell(11).getStringCellValue();
+                        if(!"-".equals(cellValue)) {
+                            province.setProvinceName(cellValue);
+                        } else if (row.getCell(10) != null) {
+                            province.setProvinceName(row.getCell(10).getStringCellValue());
                         }
+                    }
 
-                        // compilo manualmente in caso trovo una cella numerica
-                        while (cellValue.length() < 6) {
-                            cellValue = "0" + cellValue;
+                    if(row.getCell(2) != null) {
+                        province.setProvinceCode(row.getCell(2).getStringCellValue());
+                    }
+
+                    if(row.getCell(13) != null) {
+                        province.setProvinceAbbreviate(row.getCell(13).getStringCellValue());
+                    }
+
+                    provinces.add(province);
+
+
+                    Municipality municipality = new Municipality();
+
+                    Cell cell = row.getCell(4);
+                    if(cell != null) {
+                        if(cell.getCellType() == CellType.STRING) {
+                            String cellValue = cell.getStringCellValue();
+                            municipality.setMunicipalityCode(cellValue);
+                        } else if(cell.getCellType() == CellType.NUMERIC) {
+                            double numericValue = cell.getNumericCellValue();
+                            String cellValue;
+                            //faccio il controllo della cella nel file sono presenti campi numerici
+                            if (numericValue % 1 == 0) {
+                                cellValue = String.format("%.0f", numericValue);
+                            } else {
+                                cellValue = String.valueOf(numericValue);
+                            }
+
+                            // compilo manualmente in caso trovo una cella numerica
+                            while (cellValue.length() < 6) {
+                                cellValue = "0" + cellValue;
+                            }
+
+                            municipality.setMunicipalityCode(cellValue);
                         }
-
-                        municipality.setMunicipalityCode(cellValue);
                     }
-                }
 
 
-                if(row.getCell(5) != null) {
-                    municipality.setMunicipalityName(row.getCell(5).getStringCellValue());
-                }
-
-                if(row.getCell(11) != null) {
-                    String cellValue = row.getCell(11).getStringCellValue();
-                    if(!"-".equals(cellValue)) {
-                        municipality.setProvinceName(cellValue);
-                    } else if (row.getCell(10) != null) {
-                        municipality.setProvinceName(row.getCell(10).getStringCellValue());
+                    if(row.getCell(5) != null) {
+                        municipality.setMunicipalityName(row.getCell(5).getStringCellValue());
                     }
+
+                    if(row.getCell(11) != null) {
+                        String cellValue = row.getCell(11).getStringCellValue();
+                        if(!"-".equals(cellValue)) {
+                            municipality.setProvinceName(cellValue);
+                        } else if (row.getCell(10) != null) {
+                            municipality.setProvinceName(row.getCell(10).getStringCellValue());
+                        }
+                    }
+
+                    if(row.getCell(2) != null) {
+                        municipality.setProvinceCode(row.getCell(2).getStringCellValue());
+                    }
+
+                    if(row.getCell(13) != null) {
+                        municipality.setProvinceAbbreviate(row.getCell(13).getStringCellValue());
+                    }
+
+                    municipalities.add(municipality);
                 }
 
-                if(row.getCell(2) != null) {
-                    municipality.setProvinceCode(row.getCell(2).getStringCellValue());
-                }
-
-                if(row.getCell(13) != null) {
-                    municipality.setProvinceAbbreviate(row.getCell(13).getStringCellValue());
-                }
-
-                municipalities.add(municipality);
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }

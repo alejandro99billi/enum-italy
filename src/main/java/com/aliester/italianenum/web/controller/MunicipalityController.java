@@ -17,7 +17,6 @@ public class MunicipalityController {
 
     @GetMapping("/{municipalityCode}")
     public Municipality getMunicipality(@PathVariable String municipalityCode){
-        if(municipalityCode != null){}
         return service.getMunicipality(municipalityCode);
     }
 
