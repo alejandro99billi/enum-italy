@@ -1,4 +1,4 @@
-# Italiam Municipalities Providers
+# Italian Municipalities and Provinces Providers
 
 Retrieve a list of municipalities within a specific province using the province code.
 Fetch all provinces, excluding duplicates and non-relevant entries.
