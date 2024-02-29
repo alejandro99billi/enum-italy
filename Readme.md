@@ -1,38 +1,64 @@
-Location Service Implementation
-Overview
-LocationServiceImpl is a Java service class designed to manage geographical data related to Italy, specifically provinces and municipalities. It provides functionality to retrieve lists of municipalities and provinces, as well as individual municipality details based on provided codes. The service reads data from an Excel file (Elenco-comuni-italiani.xls) at initialization, parsing and storing this information in-memory for quick access.
+# Italiam Municipalities Providers
 
-Features
 Retrieve a list of municipalities within a specific province using the province code.
 Fetch all provinces, excluding duplicates and non-relevant entries.
 Get details of a specific municipality by its code.
+
+## API References
+
+#### Get All provinces from italy
+
+```http
+  GET /api/provinces
+```
+
+
+#### Get All municipalities from a single province with the provinceCode
+
+```http
+  GET /api/provinces/${provinceCode}/municipalities
+```
+
+| Parameter      | Type     | Description                                   |
+|:---------------| :------- |:----------------------------------------------|
+| `provinceCode` | `string` | **Required**. Id of item to fetch             |
+
+#### Get All municipalities from a single province with the provinceCode
+
+```http
+  GET /api/municipalities/${municipalityCode}
+```
+
+| Parameter             | Type     | Description                       |
+|:----------------------| :------- | :-------------------------------- |
+| `municipalityCode`    | `string` | **Required**. Id of item to fetch |
+
+
 Dependencies
 This service relies on Apache POI to read Excel files, specifically the HSSFWorkbook and HSSFSheet classes for handling HSSF (Horrible Spreadsheet Format) - the file format used by Excel 97-2003. Ensure you include Apache POI in your project's dependencies.
 
 
+## Deployment with docker
 
-Get Municipalities by Province Code
-java
-Copy code
-LocationService service = new LocationServiceImpl();
-List<Municipality> municipalities = service.getMunicipalities("Province_Code");
-Get All Provinces
-java
-Copy code
-LocationService service = new LocationServiceImpl();
-List<Province> provinces = service.getProvinces();
-Get Municipality Details by Code
-java
-Copy code
-LocationService service = new LocationServiceImpl();
-Municipality municipality = service.getMunicipality("Municipality_Code");
-Exception Handling
-The service throws custom exceptions (MunicipalitiesNotFoundException, MunicipalityNotFoundException) when searches return no results. Catch these exceptions in your application to handle such cases gracefully.
+To deploy this project run 
 
-Contributing
-Feel free to contribute to the improvement of LocationServiceImpl by submitting pull requests or opening issues for bugs and feature requests.
-
-How to Deploy with docker : 
+How to Deploy with docker :
 1) use mvn clean instal for generate the .jar
 2) use  docker build -t italian-enum:ita-enum for build the images
 3) use  docker run  -p 8080:8080  --name enum-provider italian-enum:ita-enum for run the container
+
+
+```bash
+  mvn clean install
+  docker build -t italian-enum:ita-enum
+  docker run  -p 8080:8080  --name enum-provider italian-enum:ita-enum
+```
+
+
+## Authors
+
+- [@alejandro99billi](https://github.com/alejandro99billi)
+
+## Appendix
+
+For make this readme or antother like this you can use this tool : https://readme.so/
